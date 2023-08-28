@@ -32,7 +32,7 @@ const Portfolio = (props: Props) => {
         </a>
       </div>
       <div className="mt-4 border border-gray-300 p-4 rounded-lg shadow-md">
-        <h3 className="text-lg font-semibold mb-2">Countdown timer</h3>
+        <h3 className="font-semibold mb-2">Countdown timer</h3>
         <p className="text-gray-600">
           This is a solution to the Launch countdown timer challenge on Frontend
           Mentor.
