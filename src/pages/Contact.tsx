@@ -1,8 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {};
 
 const Contact = (props: Props) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert("Email sent successfully");
+      } else {
+        alert("Failed to send email");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while sending the email");
+    }
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   return (
     <>
       <h2 className="text-xl font-semibold mb-2">Contact</h2>
@@ -33,6 +68,7 @@ const Contact = (props: Props) => {
           </a>
         </p>
       </div>
+
       <div className="w-1/2 border rounded-lg px-6 py-5 mt-3">
         <h3 className="text-xl font-semibold mt-3 mb-2">Contact me</h3>
         <form className="mt-2">
@@ -48,6 +84,7 @@ const Contact = (props: Props) => {
               id="name"
               name="name"
               className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
@@ -63,6 +100,7 @@ const Contact = (props: Props) => {
               id="email"
               name="email"
               className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
@@ -77,11 +115,13 @@ const Contact = (props: Props) => {
               name="message"
               rows={4}
               className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              onChange={handleChange}
             ></textarea>
           </div>
           <button
             type="submit"
             className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onSubmit={handleSubmit}
           >
             Send
           </button>
