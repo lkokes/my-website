@@ -12,7 +12,7 @@ const Contact = (props: Props) => {
       </p>
       <div className="mt-2 text-gray-600">
         <p>
-          <i className="fa-solid fa-envelope"></i> lkokesova@gmail.com
+          <i className="fa-solid fa-envelope"></i> halanova.lucia@gmail.com
         </p>
         <p>
           <i className="fab fa-linkedin mr-1"></i>
@@ -20,7 +20,7 @@ const Contact = (props: Props) => {
             href="https://www.linkedin.com/in/lucia-kokesova/"
             className="underline hover:no-underline hover:text-indigo-600"
           >
-            Lucia Kokešová
+            Lucia Halánová
           </a>
         </p>
         <p>
