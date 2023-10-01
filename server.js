@@ -6,7 +6,7 @@ var app = express();
 var port = 5000;
 
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 
 function sendEmail(emailData) {
     console.log('emailData: ' + emailData)
