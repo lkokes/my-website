@@ -1,12 +1,15 @@
 require('dotenv').config();
 var express = require('express');
 var nodemailer = require('nodemailer');
+const cors = require('cors'); 
 var app = express();
 var port = 5000;
 
-app.use(express.json()); 
+app.use(express.json());
+app.use(cors);
 
 function sendEmail(emailData) {
+    console.log('emailData: ' + emailData)
     return new Promise((resolve, reject) => {
         let transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -36,8 +39,11 @@ function sendEmail(emailData) {
 app.post('/send-email', (req, res) => {
     const emailData = req.body;
     sendEmail(emailData)
-        .then(response => res.send(response.message))
-        .catch(error => res.status(500).send(error.message));
+    .then(response => res.send(response.message))
+    .catch(error => {
+        console.error(error);
+        res.status(500).send(error.message);
+    });
 });
 
 app.listen(port, () => {
