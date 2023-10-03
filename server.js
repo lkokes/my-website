@@ -9,7 +9,6 @@ app.use(express.json());
 app.use(cors());
 
 function sendEmail(emailData) {
-    console.log('emailData: ' + emailData)
     return new Promise((resolve, reject) => {
         let transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -20,10 +19,13 @@ function sendEmail(emailData) {
         });
 
         const mailConfigs = {
-            from: `${emailData.email}`,
+            from: 'my website',
             to: process.env.MY_EMAIL,
-            subject: 'Contact Form Submission',
-            text: `${emailData.message} - ${emailData.name}`
+            subject: 'Správa z kontaktného formulára',
+            text: `
+            Odosielateľ: ${emailData.name}
+            Email odosielateľa: ${emailData.email}
+            Správa: ${emailData.message}`
         };
 
         transporter.sendMail(mailConfigs, function (error, info) {

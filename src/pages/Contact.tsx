@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+import Modal from "../components/Modal";
 
 type Props = {};
 
 const Contact = (props: Props) => {
+  const [loading, setLoading] = useState(false);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -11,8 +17,8 @@ const Contact = (props: Props) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("formdata values: " + JSON.stringify(formData));
     try {
+      setLoading(true);
       const response = await fetch("http://localhost:5000/send-email", {
         method: "POST",
         headers: {
@@ -22,13 +28,21 @@ const Contact = (props: Props) => {
       });
 
       if (response.ok) {
-        alert("Email sent successfully");
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+        });
+        setModalMessage("Email sent successfully");
       } else {
-        alert("Failed to send email");
+        setModalMessage("Failed to send email");
       }
     } catch (error) {
       console.error(error);
-      alert("An error occurred while sending the email");
+      setModalMessage("An error occurred while sending the email");
+    } finally {
+      setLoading(false);
+      setModalVisible(true);
     }
   };
 
@@ -72,6 +86,7 @@ const Contact = (props: Props) => {
 
       <div className="w-1/2 border rounded-lg px-6 py-5 mt-3">
         <h3 className="text-xl font-semibold mt-3 mb-2">Contact me</h3>
+        {loading && <p>Sending...</p>}
         <form className="mt-2" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
@@ -125,11 +140,15 @@ const Contact = (props: Props) => {
           <button
             type="submit"
             className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            disabled={loading}
           >
             Send
           </button>
         </form>
       </div>
+      {modalVisible && (
+        <Modal message={modalMessage} onClose={() => setModalVisible(false)} />
+      )}
     </>
   );
 };
